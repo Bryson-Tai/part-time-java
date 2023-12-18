@@ -17,7 +17,6 @@ public class Programme implements Serializable, Comparable<Programme> {
     public int duration;
     private SortedArrayList<Course> courseList = new SortedArrayList<>();
 
-
     public Programme() {
     }
 

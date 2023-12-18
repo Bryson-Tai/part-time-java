@@ -133,15 +133,11 @@ public class SortedArrayList<T extends Comparable<T>> implements ListInterface<T
     public T getEntry(int givenPosition) {
         T result = null;
 
-        if (givenPosition == 0){
-            return array[givenPosition];
-        }else if (givenPosition == numberOfEntries){
+        if (givenPosition < 0 || givenPosition >= numberOfEntries) {
             throw new IndexOutOfBoundsException();
         }else{
-            result = array[givenPosition];
+            return array[givenPosition];
         }
-
-        return result;
     }
 
     public boolean remove(T anEntry) {
