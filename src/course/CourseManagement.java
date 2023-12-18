@@ -283,6 +283,10 @@ public class CourseManagement {
 
                 if (courseID.isEmpty()) {
                     System.out.println("Course ID cannot be empty. Please try again.");
+                } else if (courseID.contains(" ")) {
+                    System.out.println("Course ID cannot contain space. Please try again.");
+                } else {
+                    break;
                 }
 
             } while (courseID.isEmpty());
@@ -297,7 +301,7 @@ public class CourseManagement {
                     System.out.print("Enter Course Name: ");
                     String newCourseName = sc.nextLine();
 
-                    if (newCourseName.isEmpty() || !newCourseName.matches("[A-Za-z]+")) {
+                    if (newCourseName.isEmpty() || !newCourseName.matches("[A-Za-z ]+")) {
                         System.out.println("Course Name cannot be empty. Please try again.");
                     } else {
                         foundCourse.setCourseName(newCourseName);
@@ -311,6 +315,8 @@ public class CourseManagement {
 
                     if (!creditHour.matches("[0-9]+")) {
                         System.out.println("Invalid input. Please try again.");
+                    } else if (creditHour.trim().contains(" ")) {
+                        System.out.println("Credit Hour cannot contain space. Please try again.");
                     } else {
                         foundCourse.setCreditHour(Double.parseDouble(creditHour));
                         break;
@@ -324,6 +330,8 @@ public class CourseManagement {
 
                     if (newType.isEmpty()) {
                         System.out.println("Course Type cannot be empty. Please try again.");
+                    } else if (newType.trim().contains(" ")) {
+                        System.out.println("Course Type cannot contain space. Please try again.");
                     } else {
                         foundCourse.setType(newType);
                         break;
@@ -336,6 +344,8 @@ public class CourseManagement {
 
                     if (newFaculty.length() != 4 || !newFaculty.matches("[A-Z]+")) {
                         System.out.println("Faculty cannot be empty. Please try again.");
+                    } else if (newFaculty.trim().contains(" ")) {
+                        System.out.println("Faculty cannot contain space. Please try again.");
                     } else {
                         foundCourse.setFaculty(newFaculty);
                         break;
@@ -356,7 +366,7 @@ public class CourseManagement {
         } while (choice != 'N' && choice != 'n');
     }
 
-    public static void updateProgramCourseDetails(Course amendedCourse){
+    public static void updateProgramCourseDetails(Course amendedCourse) {
         for (int i = 0; i < progList.getNumberOfEntries(); i++) {
             Programme p = progList.getEntry(i);
             for (int j = 0; j < p.getCourseList().getNumberOfEntries(); j++) {
