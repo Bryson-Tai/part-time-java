@@ -73,12 +73,13 @@ public class CourseManagement {
             System.out.println("Course Management");
             System.out.println("1. Add Course");
             System.out.println("2. Add Course To Programme");
-            System.out.println("3. Update Course");
-            System.out.println("4. Remove Course");
-            System.out.println("5. View Programme's Course List");
-            System.out.println("6. Remove Course from Programme");
-            System.out.println("7. Summary Report");
-            System.out.println("8. Back");
+            System.out.println("3. Search Method");
+            System.out.println("4. Update Course");
+            System.out.println("5. Remove Course");
+            System.out.println("6. View Programme's Course List");
+            System.out.println("7. Remove Course from Programme");
+            System.out.println("8. Summary Report");
+            System.out.println("9. Back");
 
 
             System.out.print("Enter your choice: ");
@@ -93,21 +94,24 @@ public class CourseManagement {
                     addCourseToProgramme();
                     break;
                 case '3':
-//                    updateCourse();
+                    searchMethod();
                     break;
                 case '4':
-                    removeCourse();
+                    updateCourse();
                     break;
                 case '5':
-                    viewProgramCourse();
+                    removeCourse();
                     break;
                 case '6':
-                    removeCourseFromProgramme();
+                    viewProgramCourse();
                     break;
                 case '7':
-                    generateSummaryReport();
+                    removeCourseFromProgramme();
                     break;
                 case '8':
+                    generateSummaryReport();
+                    break;
+                case '9':
                     break;
                 default:
                     System.out.println("Invalid input. Please try again.\n");
@@ -250,6 +254,149 @@ public class CourseManagement {
             choice = chSc.next().charAt(0);
 
         } while (choice != 'N' && choice != 'n');
+    }
+
+    public static void updateCourse() {
+        String courseID;
+        char choice;
+        Scanner sc = new Scanner(System.in);
+        Scanner chSc = new Scanner(System.in);
+
+        System.out.println("\nUpdate Course");
+
+        do {
+
+            if (courseList.isEmpty()) {
+                System.out.println("No courses available to amend.");
+                return;
+            }
+
+            // Display the current courses before amendment
+            System.out.println("\nCurrent Courses:");
+            System.out.printf("%-25s %-25s %-20s %-10s %-10s\n", "Course Name", "Course ID", "Credit Hour", "Type", "Faculty");
+            System.out.println(courseList);
+
+            // Prompt user for course ID to amend
+            do {
+                System.out.print("Enter the course ID to amend: ");
+                courseID = sc.nextLine().trim();
+
+                if (courseID.isEmpty()) {
+                    System.out.println("Course ID cannot be empty. Please try again.");
+                }
+
+            } while (courseID.isEmpty());
+
+            Course foundCourse = searchCourse(courseID);
+
+            if (foundCourse != null) {
+                // Course found, prompt user for new details
+                System.out.println("\nEnter new details for the course:");
+
+                do {
+                    System.out.print("Enter Course Name: ");
+                    String newCourseName = sc.nextLine();
+
+                    if (newCourseName.isEmpty() || !newCourseName.matches("[A-Z]+")) {
+                        System.out.println("Course Name cannot be empty. Please try again.");
+                    } else {
+                        foundCourse.setCourseName(newCourseName);
+                        break;
+                    }
+                } while (true);
+
+                do {
+                    System.out.print("Enter Credit Hour: ");
+                    String creditHour = sc.nextLine();
+
+                    if (!creditHour.matches("[0-9]+")) {
+                        System.out.println("Invalid input. Please try again.");
+                    } else {
+                        foundCourse.setCreditHour(Double.parseDouble(creditHour));
+                        break;
+                    }
+                } while (true);
+
+                do {
+                    System.out.print("Enter Course Type: ");
+                    String tempType = sc.nextLine();
+                    String newType = tempType.substring(0, 1).toUpperCase() + tempType.toUpperCase().substring(1);
+
+                    if (newType.isEmpty()) {
+                        System.out.println("Course Type cannot be empty. Please try again.");
+                    } else {
+                        foundCourse.setType(newType);
+                        break;
+                    }
+                } while (true);
+
+                do {
+                    System.out.print("Enter Faculty: ");
+                    String newFaculty = sc.nextLine().toUpperCase();
+
+                    if (newFaculty.length() != 4 || !newFaculty.matches("[A-Z]+")) {
+                        System.out.println("Faculty cannot be empty. Please try again.");
+                    } else {
+                        foundCourse.setFaculty(newFaculty);
+                        break;
+                    }
+                } while (true);
+
+                updateProgramCourseDetails(foundCourse);
+
+                System.out.println("Course details amended successfully.");
+            } else {
+                System.out.println("Course not found. Unable to amend.");
+            }
+
+            System.out.print("Do you want to amend another course? (Y/N): ");
+            choice = chSc.next().charAt(0);
+            System.out.println();
+
+        } while (choice != 'N' && choice != 'n');
+    }
+
+    public static void updateProgramCourseDetails(Course amendedCourse){
+        for (int i = 0; i < progList.getNumberOfEntries(); i++) {
+            Programme p = progList.getEntry(i);
+            for (int j = 0; j < p.getCourseList().getNumberOfEntries(); j++) {
+                Course c = p.getCourseList().getEntry(j);
+                if (c.getCourseID().equalsIgnoreCase(amendedCourse.getCourseID())) {
+                    p.getCourseList().getEntry(j).setCourseName(amendedCourse.getCourseName());
+                    p.getCourseList().getEntry(j).setCreditHour(amendedCourse.getCreditHour());
+                    p.getCourseList().getEntry(j).setType(amendedCourse.getType());
+                    p.getCourseList().getEntry(j).setFaculty(amendedCourse.getFaculty());
+                }
+            }
+        }
+    }
+
+    public static void searchMethod() {
+        Scanner sc = new Scanner(System.in);
+        String alignment = "%-25s %-25s %-20s %-10s %-10s\n";
+        System.out.println();
+        System.out.print("Enter search query: ");
+        String searchQuery = sc.nextLine().trim().toLowerCase();
+
+        if (searchQuery.isEmpty()) {
+            System.err.println("Search query cannot be empty.");
+            return;
+        }
+
+        System.out.println("\nSearch Results:");
+        System.out.printf(alignment, "Course Name", "Course ID", "Credit Hour", "Type", "Faculty");
+
+        for (int i = 0; i < courseList.getNumberOfEntries(); i++) {
+            Course foundCourse = courseList.getEntry(i);
+            String courseDetails = (foundCourse.getCourseName() + foundCourse.getCourseID() + foundCourse.getCreditHour() + foundCourse.getType() + foundCourse.getFaculty()).toLowerCase();
+
+            if (courseDetails.contains(searchQuery)) {
+                System.out.println(foundCourse);
+            }
+        }
+
+        System.out.println("End of Search Results");
+        System.out.println();
     }
 
     public static void removeCourse() {
