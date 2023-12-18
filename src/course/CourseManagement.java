@@ -413,7 +413,6 @@ public class CourseManagement {
             boolean loopProg = true;
             for (int j = 0; j < p.getCourseList().getNumberOfEntries(); j++) {
                 Course c = p.getCourseList().getEntry(j);
-//                System.out.println(p.getProgrammeID() + "\t" + p.getProgrammeName() + "\t" + c.getCourseID() + "\t" + c.getCourseName() + "\t" + c.getCreditHour() + "\t" + c.getType() + "\t" + c.getFaculty());
                 if (loopProg) {
                     System.out.printf(alignment, p.getProgrammeID(), p.getProgrammeName(), p.getDuration(), c.getCourseID(), c.getCourseName(), c.getCreditHour(), c.getType(), c.getFaculty());
                     loopProg = false;
@@ -422,6 +421,5 @@ public class CourseManagement {
                 }
             }
         }
-
     }
 }
