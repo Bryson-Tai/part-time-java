@@ -180,7 +180,8 @@ public class CourseManagement {
             } while (!creditHour.matches("[0-9]+"));
 
             System.out.print("Enter Course Type: ");
-            String type = sc.nextLine().substring(0, 1).toUpperCase() + sc.nextLine().toUpperCase().substring(1);
+            String tempType = sc.nextLine();
+            String type = tempType.substring(0, 1).toUpperCase() + tempType.toUpperCase().substring(1);
             System.out.print("Enter Faculty: ");
             String faculty = sc.nextLine().toUpperCase();
 
@@ -194,8 +195,8 @@ public class CourseManagement {
             }
 
             System.out.print("Do you want to add next one? (N/n to quit): ");
-            System.out.println();
             choice = chSc.next().charAt(0);
+            System.out.println();
 
         } while (choice != 'N' && choice != 'n');
     }
