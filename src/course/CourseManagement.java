@@ -297,7 +297,7 @@ public class CourseManagement {
                     System.out.print("Enter Course Name: ");
                     String newCourseName = sc.nextLine();
 
-                    if (newCourseName.isEmpty() || !newCourseName.matches("[A-Z]+")) {
+                    if (newCourseName.isEmpty() || !newCourseName.matches("[A-Za-z]+")) {
                         System.out.println("Course Name cannot be empty. Please try again.");
                     } else {
                         foundCourse.setCourseName(newCourseName);
